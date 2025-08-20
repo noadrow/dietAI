@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rap Flow Game!</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mui/material@latest/umd/material-ui.min.css" />
+    <style>
+        /* Overall Body */
+/* Overall Body */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #00796B, #80D8FF); /* Teal to Light Blue */
+}
+
+/* Main Container */
+.container {
+    text-align: center;
+    width: 80%;
+    max-width: 600px;
+    padding: 20px;
+    background: #FFFFFF; /* White */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    border: 1px solid #BBDEFB; /* Light Blue Border */
+}
+
+/* Headings */
+h1 {
+    color: #8E24AA; /* Vibrant Purple */
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px #F06292; /* Soft Pink Shadow */
+}
+
+/* Textarea */
+textarea {
+    width: 100%;
+    font-size: 18px;
+    padding: 12px;
+    border: 2px solid #64B5F6; /* Light Blue */
+    border-radius: 10px;
+    background-color: #F3E5F5; /* Light Lavender */
+    color: #1A237E; /* Deep Blue Text */
+    outline: none;
+    resize: none;
+}
+
+textarea:focus {
+    border-color: #BA68C8; /* Lavender Focus */
+    background-color: #EDE7F6; /* Soft Lavender */
+}
+
+/* Buttons */
+button.mui-btn {
+    margin: 10px;
+    font-size: 20px;
+    padding: 14px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #FFFFFF; /* White Text */
+    background-color: #EC407A; /* Magenta */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button.mui-btn:hover {
+    background-color: #D81B60; /* Deeper Magenta */
+    transform: scale(1.05);
+}
+
+/* Message Section */
+#message {
+    margin-top: 20px;
+    font-size: 22px;
+    color: #4A148C; /* Deep Purple */
+    background-color: #E1BEE7; /* Soft Pink-Purple */
+    padding: 15px;
+    border-radius: 10px;
+    display: inline-block;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Canvas */
+canvas {
+    display: block;
+    margin: 20px auto;
+    border: 3px solid #7C4DFF; /* Purple Border */
+    border-radius: 15px;
+    background-color: #EDE7F6; /* Light Lavender */
+}
+
+/* Feedback Section */
+#feedback {
+    background-color: #FFECB3; /* Soft Yellow */
+    color: #3E2723; /* Deep Brown */
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #FFD54F; /* Golden Yellow Border */
+    margin-top: 20px;
+    text-align: center;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+    </style>
+</head>
+<body>
+    <div id="Screen1" class="container">
+        <h1 style="color: #1976d2;">Welcome to the Rap-Flow Game!</h1>
+        <textarea id="targetInput" rows="5" style="width: 90%; font-size: 18px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" placeholder="Enter the target text here..."></textarea>
+        <br>
+        <button id="okButton" class="mui-btn mui-btn--contained mui-btn--primary">OK</button>
+    </div>
+
+    <div id="Screen2" class="container" style="display: none;">
+        <canvas id="gameCanvas" width="300" height="400"></canvas>
+        <div class="canvas-container">
+            <button id="startGame" class="mui-btn mui-btn--contained mui-btn--secondary">Start Game</button>
+        </div>
+        <p id="message"></p>
+        <div id="feedback"></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const messageElement = document.getElementById("message");
+        const startGameBtn = document.getElementById("startGame");
+        const targetInput = document.getElementById("targetInput");
+        const okButton = document.getElementById("okButton");
+
+        const screen1 = document.getElementById("Screen1");
+        const screen2 = document.getElementById("Screen2");
+
+        let targetText = ""; // Store user-entered text here
+
+        // Handle "OK" button click to switch screens and set target text
+        okButton.addEventListener("click", () => {
+            targetText = targetInput.value.trim();
+            if (targetText === "") {
+                alert("Please enter a target text before proceeding.");
+                return;
+            }
+            screen1.style.display = "none"; // Hide Screen 1
+            screen2.style.display = "block"; // Show Screen 2
+        });
+
+        // Text-to-speech and animation for start game
+        startGameBtn.addEventListener("click", () => {
+            messageElement.textContent = "Listening...";
+            recognition.start();
+
+
+
+            const words = targetText.split(" "); // Split text into words
+            const wordsPerGroup = 3; // Number of words to show at once
+            let wordIndex = 0; // Start from the first word
+
+            // Text-to-speech
+            const utterance = new SpeechSynthesisUtterance(targetText);
+
+            messageElement.textContent = "Listen and repeat!";
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Animate words in groups
+            function animateText() {
+        if (wordIndex < words.length) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+            ctx.font = "24px Arial";
+            ctx.fillStyle = "black";
+
+            // Get a slice of words for the current group
+            const group = words.slice(wordIndex, wordIndex + wordsPerGroup).join(" ");
+            ctx.fillText(group, canvas.width / 2 - 100, canvas.height / 2); // Adjust position
+
+            wordIndex += wordsPerGroup; // Move to the next group
+            setTimeout(animateText, 1000); // Delay for each group
+        } else {
+            // Clear the canvas after the last group
+            setTimeout(() => ctx.clearRect(0, 0, canvas.width, canvas.height), 500);
+        }
+    }
+
+    // Add a pause before starting the animation
+    setTimeout(() => {
+        messageElement.textContent = "Listen and repeat!";
+        animateText(); // Start the animation
+    }, 5000); // 2000ms (2 seconds) delay before animation starts
+});
+
+        // Speech recognition setup
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognition.lang = "en-US";
+        recognition.interimResults = false;
+
+        recognition.addEventListener("result", (event) => {
+            const spokenText = event.results[0][0].transcript;
+            const similarity = calculateSimilarity(spokenText.toLowerCase(), targetText.toLowerCase());
+
+            // Clear existing text and set up new display below
+            messageElement.textContent = "Recognition ended. Press Start Speaking to try again.";
+
+            // Display spoken text and similarity feedback
+            const feedbackElement = document.getElementById("feedback");
+            feedbackElement.style.marginTop = "20px";
+            feedbackElement.style.textAlign = "center";
+            feedbackElement.innerHTML = `
+                <p><strong>You said:</strong> ${spokenText}</p>
+                <p><strong>Similarity:</strong> ${Math.round(similarity * 100)}%</p>
+                <p>${similarity > 0.7 ? "Close enough!" : "Not close enough."}</p>
+            `;
+
+            // Append feedback below the message
+            const controls = document.getElementById("controls");
+            controls.appendChild(feedbackElement);
+        });
+
+        recognition.addEventListener("end", () => {
+            messageElement.textContent = "Recognition ended. Press Start Speaking to try again.";
+        });
+
+        recognition.addEventListener("error", (event) => {
+            messageElement.textContent = "Error: " + event.error;
+        });
+
+        // Levenshtein Distance for similarity calculation
+        function calculateSimilarity(str1, str2) {
+            const len1 = str1.length;
+            const len2 = str2.length;
+            const dp = Array.from({ length: len1 + 1 }, () => Array(len2 + 1).fill(0));
+
+            for (let i = 0; i <= len1; i++) dp[i][0] = i;
+            for (let j = 0; j <= len2; j++) dp[0][j] = j;
+
+            for (let i = 1; i <= len1; i++) {
+                for (let j = 1; j <= len2; j++) {
+                    if (str1[i - 1] === str2[j - 1]) {
+                        dp[i][j] = dp[i - 1][j - 1];
+                    } else {
+                        dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1;
+                    }
+                }
+            }
+
+            const distance = dp[len1][len2];
+            const maxLen = Math.max(len1, len2);
+            return 1 - distance / maxLen; // Similarity as a percentage
+        }
+    </script>
+</body>
+</html>
