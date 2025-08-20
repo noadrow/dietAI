@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)http://192.168.1.213:5000/hello -->
+<html lang="he" dir="rtl"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>מעקב תזונה</title>
+  <style>
+    
+body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 20px;
+      background: #f8f9fa;
+      color: #333;
+    }
+    h2 {
+      color: #2c3e50;
+    }
+    .nutrition {
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .nutrition strong {
+      color: #27ae60;
+    }
+    .nutrients {
+      display: flex;
+      gap: 20px;
+      margin-top: 10px;
+    }
+    .nutrients div {
+      background: #ecf0f1;
+      padding: 10px;
+      border-radius: 8px;
+      min-width: 100px;
+      text-align: center;
+    }
+    .advice {
+      background: #e8f5e9;
+      border-right: 5px solid #2ecc71;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    ul {
+      margin-top: 10px;
+    }
+  </style>
+    </head><body>
+        <h1>Diet App</h1>
+        <div class="nutrition">
+        <p><strong>סיכום יומי:</strong></p>
+        <p>{'שומנים': 0.0, 'חלבונים': 0.0, 'פחמימות': 0.0}</p>
+        </div>
+        <form action="http://192.168.1.213:5000/hello" method="post">
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Food Type</th>
+                        <th>Calories</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" name="amount" required=""></td>
+                        <td><input type="text" name="food_type" required=""></td>
+                        <td><input type="text" name="calories" required=""></td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <button type="submit">Send</button>
+        </form>
+    
+
+    <div style="font-family: Arial, sans-serif; max-width: 650px; margin: 20px auto; border: 1px solid #e0e0e0; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); overflow: hidden; background-color: #ffffff;">
+    <div style="background-color: #d4edda; padding: 20px; border-bottom: 1px solid #c3e6cb; text-align: center;">
+        <h2 style="color: #155724; margin: 0; font-size: 1.8em;">הערכה תזונתית למנת סלט ירוק</h2>
+        <p style="color: #155724; font-size: 1.1em; margin-top: 5px;">פריט: סלט ירוק (250 גרם)</p>
+    </div>
+    <div style="padding: 25px;">
+        <div style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+            <h3 style="color: #343a40; margin-top: 0; border-bottom: 1px solid #dee2e6; padding-bottom: 10px;">סיכום קלורי ומאקרו-נוטריינטים:</h3>
+            <p style="font-size: 1.2em; color: #495057; margin-bottom: 10px;"><b>קלוריות משוערות:</b> 50 קק"ל</p>
+            <p style="font-size: 1.2em; color: #dc3545; margin-bottom: 10px;"><b>שומנים:</b> 0.5 גרם</p>
+            <p style="font-size: 1.2em; color: #28a745; margin-bottom: 10px;"><b>חלבונים:</b> 3 גרם</p>
+            <p style="font-size: 1.2em; color: #ffc107; margin-bottom: 0;"><b>פחמימות:</b> 7.5 גרם</p>
+            <p style="display: none;"><שומנים:0.5 גרם><חלבונים:3 גרם><פחמימות:7.5 גרם></p> <!-- The specific output format requested -->
+        </div>
+        <h3 style="color: #007bff; border-bottom: 1px solid #cfe2ff; padding-bottom: 10px; margin-top: 30px;">עצה תזונתית לחולי סוכרת:</h3>
+        <p style="color: #343a40; line-height: 1.6; font-size: 1.1em;">
+            סלט ירוק הוא בחירה מצוינת לחולי סוכרת בזכות תכולת פחמימות נמוכה במיוחד וסיבים תזונתיים גבוהים, המסייעים בוויסות רמות הסוכר בדם ומקנים תחושת שובע.
+        </p>
+        <ul style="color: #343a40; list-style-type: disc; padding-left: 25px; margin-top: 15px;">
+            <li style="margin-bottom: 10px;"><b>תוספות חכמות:</b> העדיפו להוסיף לסלט חלבונים רזים כמו חזה עוף בגריל, דגים, טופו, ביצה קשה או קטניות (כמות מבוקרת). שלבו גם שומנים בריאים כגון רבע אבוקדו, מעט אגוזים (לא קלויים ומלוחים) או זרעים.</li>
+            <li style="margin-bottom: 10px;"><b>ירקות מומלצים:</b> הגדילו את מגוון הירקות הלא-עמילניים בסלט – מלפפון, עגבנייה, פלפל בכל הצבעים, צנוניות, פטריות, כרובית וברוקולי. ירקות אלו עשירים בוויטמינים ומינרלים ובעלי השפעה מינימלית על רמות הסוכר.</li>
+            <li style="margin-bottom: 10px;"><b>רטבים:</b> הימנעו מרטבים קנויים עתירי סוכר, שומן טראנס ונתרן. הכינו רוטב ביתי פשוט על בסיס שמן זית כתית מעולה, חומץ תפוחים או בלסמי (בכמות מבוקרת), מיץ לימון טרי ועשבי תיבול טריים.</li>
+            <li style="margin-bottom: 0;"><b>שליטה במנות:</b> למרות שסלט ירוק בריא, אם אתם מוסיפים לו תוספות עתירות פחמימות כמו קרוטונים, תירס, אפונה או קטניות (חומוס, עדשים), שימו לב לגודל המנה על מנת לשמור על איזון רמות הסוכר.</li>
+        </ul>
+    </div>
+    <div style="background-color: #f0f8ff; padding: 15px; text-align: center; font-size: 0.9em; color: #6c757d; border-top: 1px solid #e0e0e0;">
+        <p>
+            <span style="font-weight: bold; color: #333;">חשוב לזכור:</span> הערכה זו היא כללית ונועדה להדרכה בלבד.
+            מומלץ תמיד להתייעץ עם דיאטן/ית קליני/ת לקבלת תוכנית תזונה מותאמת אישית.
+        </p>
+    </div>
+</div>
+    </body></html>
