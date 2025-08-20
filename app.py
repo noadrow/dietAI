@@ -3,7 +3,7 @@ from google import genai
 import os
 
 # The client gets the API key from the environment variable `GEMINI_API_KEY`.
-client = genai.Client(api_key="AIzaSyBa4jzkEs9sNpgzYKyurki15StczuOsUlU")
+client = genai.Client(api_key="get your own one bitch")
 
 app = Flask(__name__)
 
