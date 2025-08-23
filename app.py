@@ -1,9 +1,10 @@
 from flask import Flask, request, render_template_string
 from google import genai
 import os
+import re
 
 # The client gets the API key from the environment variable `GEMINI_API_KEY`.
-client = genai.Client(api_key="get your own one bitch")
+client = genai.Client(api_key="AIzaSyBa4jzkEs9sNpgzYKyurki15StczuOsUlU")
 
 app = Flask(__name__)
 
@@ -58,16 +59,19 @@ def add_nutrients(total, new_entry):
     return total
 
 def process(text):
-    import re
     numbers = {}
 
     # Regex to extract the part inside <>
     if len(text.split(":")) > 1:
-        name, value, _ = text.split(":", 2)
-        if (any(v.isdigit() for v in value)):
-            numbers[name.strip()] = float(re.search(r"[\d.]+", value).group())
-        else:
-            pass
+        name1, value1, _ = text.split("שומנים", 2)
+        name2, value2, _ = text.split("חלבונים", 2)
+        name3, value3, _ = text.split("פחמימות", 2)
+        values = [value1,value2,value3]
+        for value,name in zip(values,["פחמימות","חלבונים","שומנים"]):
+            if (any(v.isdigit() for v in value)):
+                numbers[name] = float(re.search(r"[\d.]+", value).group())
+            else:
+                pass
     html_template_AI_answer = re.findall(r"<([^<>]+)>", text)
 
     return [numbers,html_template_AI_answer]
@@ -82,7 +86,7 @@ def hello():
 
         content = f"""
         תאריך את  הקלוריות פחממות  שומנים וחלבונים לפי המידע הבא:
-        {amount},{food_type},{calories}
+        amount:{amount},food_type:{food_type},calories:{calories}
         תענה בדפוס הבא: 
         <שומנים:תשובה><חלבונים:תשובה><פחמימות:תשובה>
         ותן עצה תזונאית לחולי סכרת
@@ -93,8 +97,6 @@ def hello():
             model="gemini-2.5-flash", contents=content
         )
 
-        # Get the text from the input named 'userInput'
-        user_text = request.form.get("userInput")
         # Do something with user_text here
         print(content)
         print(response)
@@ -102,8 +104,48 @@ def hello():
         data,html_template_AI_answer = process(str(response.text))
         add_nutrients(data_today, data)
 
-        return (f"{str(response.text)}")
+        html_block = f"""
+            <!DOCTYPE html>
+        <html lang="he" dir="rtl">
+        <head>
+          <meta charset="UTF-8">
+          <title>מעקב תזונה</title>
+          <style>
+            {css_template}
+          </style>
+            <body>
+                <h1>Diet App</h1>
+                <div class="nutrition">
+                <p><strong>סיכום יומי:</strong></p>
+                <p>{data_today}</p>
+                </div>
+                <form action="/hello" method="post">
+                    <table border="1" cellpadding="5" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Amount</th>
+                                <th>Food Type</th>
+                                <th>Calories</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" name="amount" required /></td>
+                                <td><input type="text" name="food_type" required /></td>
+                                <td><input type="text" name="calories" required /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                    <button type="submit">Send</button>
+                </form>
+            </body>
+            {str(response.text)}
+        </body>
+            </html>
+            """
 
+        return html_block
 
     # For GET, just show the form
     html_block = f"""
